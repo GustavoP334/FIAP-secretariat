@@ -2,24 +2,35 @@
 
 namespace App\Core;
 
-class Router {
+class Router
+{
     protected $routes = [];
 
-    public function get($uri, $controllerAction) {
+    public function get($uri, $controllerAction)
+    {
         $this->routes['GET'][$uri] = $controllerAction;
     }
 
-    public function dispatch($uri) {
+    public function post($uri, $controller)
+    {
+        $this->routes['POST'][$uri] = $controller;
+    }
+
+    public function dispatch($uri)
+    {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($uri, PHP_URL_PATH);
 
         if (isset($this->routes[$method][$uri])) {
-            [$controller, $action] = explode('@', $this->routes[$method][$uri]);
-            $controller = "App\\Controllers\\{$controller}";
-            (new $controller)->$action();
-        } else {
-            http_response_code(404);
-            echo "Página não encontrada!";
+            $controllerInfo = $this->routes[$method][$uri];
+            $controller = new $controllerInfo[0]();
+            $action = $controllerInfo[1];
+    
+            return $controller->$action();
         }
+    
+        // Página não encontrada
+        http_response_code(404);
+        echo "Página não encontrada";
     }
 }

@@ -2,19 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Services\registrationService;
+use App\Services\RegistrationService;
 
-class registrationController 
+require_once __DIR__ . '/../Helpers/view.php';
+
+class RegistrationController
 {
-    protected registrationService $registrationService;
+    protected RegistrationService $registrationService;
 
     public function __construct()
     {
-        $this->registrationService = new registrationService();
+        $this->registrationService = new RegistrationService();
     }
 
     public function index() 
     {
-        return $this->registrationService->index();
+        $data = $this->registrationService->index();
+
+        view('registration', [
+            'title' => 'Matrículas',
+            'data' => $data
+        ]);
     }
 }

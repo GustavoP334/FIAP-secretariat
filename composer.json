@@ -3,7 +3,7 @@
     "description": "A PHP project to manage students and their classes.",
     "type": "project",
     "require": {
-      "php": "^7.4 || ^8.0"
+      "php": "^7.4"
     },
     "autoload": {
       "psr-4": {

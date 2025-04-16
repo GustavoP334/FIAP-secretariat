@@ -2,10 +2,21 @@
 
 namespace App\Services;
 
-class registrationService
+use App\Models\RegistrationModel;
+
+class RegistrationService
 {
+    protected RegistrationModel $registrationModel;
+
+    public function __construct()
+    {
+        $this->registrationModel = new RegistrationModel();
+    }
+
     public function index()
     {
-        echo "Página class!";
+        $dados = $this->registrationModel->getAll();
+
+        return $dados;
     }
 }
