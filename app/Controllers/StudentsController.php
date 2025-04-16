@@ -28,5 +28,10 @@ class StudentsController
     public function store()
     {
         $data = $this->studentsService->store($_POST);
+
+        setFlashMessage($data['Message'], $data['Status']);
+
+        header('Location: /alunos');
+        exit;
     }
 }

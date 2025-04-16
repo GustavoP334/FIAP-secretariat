@@ -70,3 +70,35 @@
     </div>
   </div>
 </div>
+
+<div class="m-2">
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Data de Nascimento</th>
+                <th scope="col">Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($data as $value):?>
+                <tr>
+                    <?php foreach ($value as $key => $student): ?>
+                        <td <?= $key == 'id' ? 'scope="row"' : '' ?> title="<?= $student ?>">
+                            <?= $key == 'birth_date' ? date('d/m/Y', strtotime($student)) : $student ?>
+                        </td>
+                    <?php endforeach ?>
+
+                    <td <?= $key == 'id' ? 'scope="row"' : '' ?>>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+</div>
