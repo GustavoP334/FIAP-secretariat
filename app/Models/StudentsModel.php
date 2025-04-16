@@ -18,17 +18,51 @@ class StudentsModel
         $this->db = dbConnect();
     }
 
-    public function getAll(): array
+    public function getAll(string $search, int $page = 1, int $perPage = 10): array
     {
-        $stmt = $this->db->query("SELECT id, name, email, document, birth_date FROM $this->tableName ORDER BY name ASC;");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+        $offset = ($page - 1) * $perPage;
+        
+        $query = "SELECT id, name, email, document, birth_date FROM {$this->tableName}";
+        
+        if ($search !== '') {
+            $query .= " WHERE name LIKE :search";
+        }
+    
+        $query .= " LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($query);
+        
+        if ($search !== '') {
+            $stmt->bindValue(':search', '%' . $search . '%');
+        }
+    
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    
+        $stmt->execute();
+        return [
+            "data" => $stmt->fetchAll(PDO::FETCH_ASSOC),
+            "paginate" => $this->countAll($search),
+            "perPage" => $perPage
+        ];
+    }    
 
-    public function getById($id): array
+    private function countAll(string $search): int
     {
-        $stmt = $this->db->prepare("SELECT * FROM $this->tableName WHERE id = ?;");
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $query = "SELECT COUNT(*) FROM {$this->tableName}";
+
+        if ($search !== '') {
+            $query .= " WHERE name LIKE :search";
+        }
+
+        $stmt = $this->db->prepare($query);
+
+        if ($search !== '') {
+            $stmt->bindValue(':search', '%' . $search . '%');
+        }
+
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
     }
 
     public function new(array $data)
@@ -45,7 +79,20 @@ class StudentsModel
             if ($e->errorInfo[1] == 1062) {
                 return "CPF ou e-mail já cadastrado.";
             }
-            throw $e;
+            return $e;
         }
+    }
+
+    public function delete($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM {$this->tableName} WHERE id = (?)");
+
+        $stmt->execute([$id]);
+
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        return true;
     }
 }

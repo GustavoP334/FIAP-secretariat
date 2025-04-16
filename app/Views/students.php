@@ -6,10 +6,10 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalAlunoLabel">Cadastrar Aluno</h1>
+        <h1 class="modal-title fs-5" id="modalAlunoLabel">Gerenciar Aluno</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="POST" action="/alunos/store" class="needs-validation" novalidate>
+      <form method="POST" action="/alunos/store" class="needs-validation" novalidate id="formAluno">
         <div class="modal-body">
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-sm-6">
@@ -25,7 +25,7 @@
                         <span class="input-group-text" id="documentHelp">
                             <i class="fa-solid fa-id-card"></i>
                         </span>
-                        <input type="text" class="form-control" name="document" id="document" minlength="14" maxlength="14" onkeyup="onCpfKeyUp(this); aplicarMascaraCPF(this)" placeholder="Documento" aria-label="Documento" aria-describedby="documentHelp" required>
+                        <input type="text" class="form-control" name="document" id="document" minlength="14" maxlength="14" onchange="onCpfKeyUp(this); aplicarMascaraCPF(this)" onkeyup="onCpfKeyUp(this); aplicarMascaraCPF(this)" placeholder="Documento" aria-label="Documento" aria-describedby="documentHelp" required>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,41 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalDeletar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalDeletaAlunoLabel">Deletar Aluno</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/alunos/" method="POST" id="deleteForm">
+        <input type="hidden" name="_method" value="DELETE">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6">
+                <h4>Confirma a exclusão do aluno?</h4>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+            <button type="submit" class="btn btn-danger">Sim</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="m-2">
+    <div class="row d-flex justify-content-end mb-2">
+        <div class="col-sm-3">
+            <form action="/alunos" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Buscar pelo nome do aluno" value="<?= isset($_GET['search']) ? $_GET['search'] : '' ?>">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
@@ -80,25 +114,55 @@
                 <th scope="col">E-mail</th>
                 <th scope="col">Documento</th>
                 <th scope="col">Data de Nascimento</th>
-                <th scope="col">Editar</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($data as $value):?>
+            <?php if (empty($data)): ?>
                 <tr>
-                    <?php foreach ($value as $key => $student): ?>
-                        <td <?= $key == 'id' ? 'scope="row"' : '' ?> title="<?= $student ?>">
-                            <?= $key == 'birth_date' ? date('d/m/Y', strtotime($student)) : $student ?>
-                        </td>
-                    <?php endforeach ?>
-
-                    <td <?= $key == 'id' ? 'scope="row"' : '' ?>>
-                        <button type="button" class="btn btn-primary">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                    </td>
+                    <td colspan="6" class="text-center">Nenhum aluno cadastrado</td>
                 </tr>
-            <?php endforeach ?>
+            <?php else: ?>
+                <?php foreach ($data as $value): ?>
+                    <tr>
+                        <?php foreach ($value as $key => $student): ?>
+                            <td <?= $key == 'id' ? 'scope="row"' : '' ?> title="<?= $student ?>">
+                                <?= $key == 'birth_date' ? date('d/m/Y', strtotime($student)) : $student ?>
+                            </td>
+                        <?php endforeach ?>
+
+                        <td <?= $key == 'id' ? 'scope="row"' : '' ?>>
+                            <button type="button" class="btn btn-primary" data-bs-data='<?= json_encode($value, JSON_HEX_APOS | JSON_HEX_QUOT) ?>' data-bs-toggle="modal" data-bs-target="#modalAluno">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            
+                            <button type="submit" class="btn btn-danger" data-bs-id="<?= $value['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeletar">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            <?php endif; ?>
         </tbody>
     </table>
+    
+    <?php 
+        $search = $_GET['search'] ?? ''; 
+        $currentPage = (int) ($_GET['page'] ?? 1);
+    ?>
+
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <?php for ($i = 1; $i <= ceil($paginate / $perPage); $i++): ?>
+                    <li class="page-item">
+                        <a class="page-link <?= ($i === $currentPage) ? 'active' : '' ?>" href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor ?>
+            </ul>
+        </nav>
+    </div>
+
 </div>

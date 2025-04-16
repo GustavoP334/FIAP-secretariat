@@ -13,10 +13,10 @@ class StudentsService
         $this->studentsModel = new StudentsModel();
     }
 
-    public function index()
+    public function index($search = '', int $page)
     {
-        $dados = $this->studentsModel->getAll();
-
+        $dados = $this->studentsModel->getAll($search, $page);
+        
         return $dados;
     }
 
@@ -54,7 +54,24 @@ class StudentsService
         }
     }
 
-    function verifyPassword($password) {
+    public function delete($id)
+    {
+        $execute = $this->studentsModel->delete($id);
+
+        if($execute){
+            return [
+                'Message' => 'Aluno deletado com sucesso!',
+                'Status' => 'Success'
+            ];
+        } else {
+            return [
+                'Message' => "Erro ao deletar aluno.",
+                'Status' => 'Error'
+            ];
+        }
+    }
+
+    private function verifyPassword($password) {
         $minCaracteres = strlen($password) >= 8;
     
         $hasTiny = preg_match('/[A-Z]/', $password);
@@ -72,7 +89,7 @@ class StudentsService
         return false;
     }
 
-    function encryptPassword($password)
+    private function encryptPassword($password)
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }

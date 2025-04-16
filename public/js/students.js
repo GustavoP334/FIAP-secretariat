@@ -73,3 +73,18 @@ function validarSenha(senha) {
     document.getElementById("numeros").style.color = temNumero ? "green" : "red";
     document.getElementById("simbolos").style.color = temSimbolo ? "green" : "red";
 }
+
+document.getElementById('modalDeletar').addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget
+    var dataBsId = button.getAttribute('data-bs-id')
+    var form = document.getElementById('deleteForm');
+    form.action = '/alunos/' + dataBsId;
+})
+
+document.getElementById('modalAluno').addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget
+    var dataBsData = button.getAttribute('data-bs-data')
+    const data = JSON.parse(dataBsData);
+    var form = document.getElementById('formAluno');
+    console.log(data);
+})

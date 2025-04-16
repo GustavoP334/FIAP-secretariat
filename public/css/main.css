@@ -41,3 +41,7 @@ td,tr {
     overflow: hidden;
     max-width: 2rem;
 }
+
+span.input-group-text{
+    background-color: #ed145b;
+}

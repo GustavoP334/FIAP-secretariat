@@ -11,11 +11,13 @@ Projeto desenvolvido com PHP, tem como criar u.
 ```bash
   composer install
 ```
-#### 2. Atualização das variáveis de ambiente no arquivo `.env`
+#### 2. Copiar o arquivo `.env.example` e renomear para `.env`
 
-#### 3. Rodar os scripts no arquivo dump.sql, para criar as tabelas
+#### 3. Atualizar as variáveis de ambiente no arquivo `.env`
 
-#### 4. Inicializar o projeto
+#### 4. Executar os scripts SQL que estão no arquivo `dump.sql`, para criar as tabelas no banco de dados
+
+#### 5. Inicializar o projeto
 ```bash
   php -S 0.0.0.0:8000 router.php
 ```
