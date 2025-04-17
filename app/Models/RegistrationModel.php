@@ -2,20 +2,11 @@
 
 namespace App\Models;
 
-require_once __DIR__ . '/../../database/config.php';
-
-use InvalidArgumentException;
 use PDO;
 
-class RegistrationModel
+class RegistrationModel extends Model
 {
-    protected PDO $db;
     protected $tableName = 'registrations';
-
-    public function __construct()
-    {
-        $this->db = dbConnect();
-    }
 
     public function getAll(): array
     {
@@ -32,13 +23,7 @@ class RegistrationModel
 
     public function new(array $data): bool
     {
-        if (empty($data['student_id']) || empty($data['class_id'])) {
-            throw new InvalidArgumentException("Os campos turma e Aluno são obrigatórios.");
-        }
-    
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $this->tableName)) {
-            throw new InvalidArgumentException("Nome da tabela é inválido.");
-        }
+        $this->validateColumnName($this->tableName);
 
         $stmt = $this->db->prepare("INSERT INTO {$this->tableName} (student_id, class_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())");
 

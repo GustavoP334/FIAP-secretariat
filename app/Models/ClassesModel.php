@@ -4,23 +4,35 @@ namespace App\Models;
 
 use PDO;
 
-class StudentsModel extends Model
+class ClassesModel extends Model
 {
-    protected $tableName = 'students';
+    protected $tableName = 'classes';
 
     public function getAll(string $search, int $page = 1, int $perPage = 10): array
     {
         $offset = ($page - 1) * $perPage;
         
-        $query = "SELECT id, name, email, document, birth_date FROM {$this->tableName}";
-        
-        if ($search !== '') {
-            $query .= " WHERE name LIKE :search";
-        }
-    
-        $query .= " ORDER BY name ASC";
+        $query = "
+            SELECT 
+                classes.id, 
+                classes.name, 
+                classes.description, 
+                classes.created_at, 
+                COUNT(students.id) AS num_students
+            FROM classes
+            LEFT JOIN registrations ON registrations.class_id = classes.id
+            LEFT JOIN students ON students.id = registrations.student_id
+        ";
 
-        $query .= " LIMIT :limit OFFSET :offset";
+        if ($search !== '') {
+            $query .= " WHERE classes.name LIKE :search";
+        }
+
+        $query .= "
+            GROUP BY classes.id
+            ORDER BY classes.name ASC
+            LIMIT :limit OFFSET :offset
+        ";
         
         $stmt = $this->db->prepare($query);
         
@@ -37,31 +49,24 @@ class StudentsModel extends Model
             "paginate" => $this->countAll($search, $this->tableName),
             "perPage" => $perPage
         ];
-    }    
+    }
 
-    public function new(array $data)
+    public function new(array $data): bool
     {
         $this->validateColumnName($this->tableName);
 
-        $stmt = $this->db->prepare("INSERT INTO {$this->tableName} (name, document, birth_date, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+        $stmt = $this->db->prepare("INSERT INTO {$this->tableName} (name, description, created_at, updated_at) VALUES (?, ?, NOW(), NOW())");
 
-        try {
-            return $stmt->execute([$data['name'], $data['document'], $data['birth_date'], $data['email'], $data['password']]);
-        } catch (\PDOException $e) {
-            if ($e->errorInfo[1] == 1062) {
-                return "CPF ou e-mail já cadastrado.";
-            }
-            return $e;
-        }
+        return $stmt->execute([$data['name'], $data['description']]);
     }
 
     public function put(array $data)
     {
         $this->validateColumnName($this->tableName);
 
-        $stmt = $this->db->prepare("UPDATE {$this->tableName} SET name = ?, document = ?, birth_date = ?, email = ?, updated_at = NOW() WHERE id = ?");
+        $stmt = $this->db->prepare("UPDATE {$this->tableName} SET name = ?, description = ?, updated_at = NOW() WHERE id = ?");
 
-        $stmt->execute([$data['name'], $data['document'], $data['birth_date'], $data['email'], $data['id']]);
+        $stmt->execute([$data['name'], $data['description'], $data['id']]);
 
         if ($stmt->rowCount() === 0) {
             return false;

@@ -6,7 +6,7 @@ use App\Services\RegistrationService;
 
 require_once __DIR__ . '/../Helpers/view.php';
 
-class RegistrationController
+class RegistrationController extends Controller
 {
     protected RegistrationService $registrationService;
 

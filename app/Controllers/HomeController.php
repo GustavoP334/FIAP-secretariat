@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 require_once __DIR__ . '/../Helpers/view.php';
 
-class HomeController 
+class HomeController extends Controller
 {
     public function index() 
     {

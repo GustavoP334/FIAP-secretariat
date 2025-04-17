@@ -2,17 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Services\StudentsService;
+use App\Services\ClassesService;
 
 require_once __DIR__ . '/../Helpers/view.php';
 
-class StudentsController extends Controller
+class ClassesController extends Controller
 {
-    protected StudentsService $studentsService;
+    protected ClassesService $classesService;
 
     public function __construct()
     {
-        $this->studentsService = new StudentsService();
+        $this->classesService = new ClassesService();
     }
 
     public function index()
@@ -20,40 +20,40 @@ class StudentsController extends Controller
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $page = $_GET['page'] ?? 1;
 
-        $data = $this->studentsService->index($search, (int)$page);
+        $data = $this->classesService->index($search, (int)$page);
 
-        view('students', [
-            'title' => 'Alunos',
+        view('classes', [
+            'title' => 'Turmas',
             'data' => $data['data'],
             'paginate' => $data['paginate'],
             'perPage' => $data['perPage']
-        ], 'students.js');
+        ], 'classes.js');
     }
 
     public function store()
     {
-        $data = $this->studentsService->store($_POST);
+        $data = $this->classesService->store($_POST);
 
         setFlashMessage($data['Message'], $data['Status']);
 
-        $this->redirect('/alunos');
+        $this->redirect('/turmas');
     }
     
     public function put()
     {
-        $data = $this->studentsService->put($_POST);
+        $data = $this->classesService->put($_POST);
 
         setFlashMessage($data['Message'], $data['Status']);
 
-        $this->redirect('/alunos');
+        $this->redirect('/turmas');
     }
 
     public function delete($id)
     {
-        $data = $this->studentsService->delete($id);
+        $data = $this->classesService->delete($id);
 
         setFlashMessage($data['Message'], $data['Status']);
 
-        $this->redirect('/alunos');
+        $this->redirect('/turmas');
     }
 }
