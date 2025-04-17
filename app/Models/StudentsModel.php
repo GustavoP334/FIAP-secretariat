@@ -83,6 +83,23 @@ class StudentsModel
         }
     }
 
+    public function put(array $data)
+    {
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $this->tableName)) {
+            throw new InvalidArgumentException("Nome da tabela é inválido.");
+        }
+
+        $stmt = $this->db->prepare("UPDATE {$this->tableName} SET name = ?, document = ?, birth_date = ?, email = ?, updated_at = NOW()  WHERE id = ?");
+
+        $stmt->execute([$data['name'], $data['document'], $data['birth_date'], $data['email'], $data['id']]);
+
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM {$this->tableName} WHERE id = (?)");

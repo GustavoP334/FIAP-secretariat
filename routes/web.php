@@ -11,5 +11,5 @@ $router->get('/matriculas', [RegistrationController::class, 'index']);
 
 $router->get('/alunos', [StudentsController::class, 'index']);
 $router->post('/alunos/store', [StudentsController::class, 'store']);
+$router->put('/alunos/store', [StudentsController::class, 'put']);
 $router->delete('/alunos/{id}', [StudentsController::class, 'delete']);
-$router->put('/alunos/{id}', [StudentsController::class, 'delete']);

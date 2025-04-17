@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\MessageTypes;
 use App\Models\StudentsModel;
 
 class StudentsService
@@ -22,15 +23,9 @@ class StudentsService
 
     public function store($data)
     {
-        if (in_array(null, $data, true) || in_array('', $data, true)) {
-            return false;
-        }
-        
-        $data['document'] = str_replace(['.', '-'], '', $data['document']);
+        $data['document'] = $this->formatDocument($data['document']);
 
-        if (strlen($data['name']) < 3 && strlen($data['document']) < 11 && !$this->verifyPassword($data['password'])) {
-            return false;
-        }
+        $this->validate($data);
 
         $data['password'] = $this->encryptPassword($data['password']);
 
@@ -39,17 +34,38 @@ class StudentsService
         if($execute === true){
             return [
                 'Message' => 'Aluno cadastrado com sucesso!',
-                'Status' => 'Success'
+                'Status' => MessageTypes::SUCCESS
             ];
         } elseif (is_string($execute)) {
             return [
                 'Message' => $execute,
-                'Status' => 'Error'
+                'Status' => MessageTypes::ERROR
             ];
         } else {
             return [
                 'Message' => "Erro ao cadastrar aluno.",
-                'Status' => 'Error'
+                'Status' => MessageTypes::ERROR
+            ];
+        }
+    }
+    
+    public function put($data)
+    {
+        $data['document'] = $this->formatDocument($data['document']);
+
+        $this->validate($data);
+
+        $execute = $this->studentsModel->put($data);
+
+        if($execute){
+            return [
+                'Message' => 'Aluno atualizado com sucesso!',
+                'Status' => MessageTypes::SUCCESS
+            ];
+        } else {
+            return [
+                'Message' => "Erro ao atualizar aluno.",
+                'Status' => MessageTypes::ERROR
             ];
         }
     }
@@ -61,14 +77,36 @@ class StudentsService
         if($execute){
             return [
                 'Message' => 'Aluno deletado com sucesso!',
-                'Status' => 'Success'
+                'Status' => MessageTypes::SUCCESS
             ];
         } else {
             return [
                 'Message' => "Erro ao deletar aluno.",
-                'Status' => 'Error'
+                'Status' => MessageTypes::ERROR
             ];
         }
+    }
+
+    private function formatDocument($document)
+    {
+        return str_replace(['.', '-'], '', $document);
+    }
+
+    private function validate($data)
+    {
+        if (in_array(null, $data, true) || in_array('', $data, true)) {
+            return [
+               'Message' => 'É necessário preencher todos os dados.',
+               'Status' => MessageTypes::ERROR
+           ];
+       }
+
+       if (strlen($data['name']) < 3 && strlen($data['document']) < 11 && !$this->verifyPassword($data['password'])) {
+        return [
+           'Message' => 'Os dados não seguiram o padrão de obrigatoriedade!',
+           'Status' => MessageTypes::SUCCESS
+       ];
+   }
     }
 
     private function verifyPassword($password) {

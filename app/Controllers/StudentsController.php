@@ -39,6 +39,16 @@ class StudentsController
         header('Location: /alunos');
         exit;
     }
+    
+    public function put()
+    {
+        $data = $this->studentsService->put($_POST);
+
+        setFlashMessage($data['Message'], $data['Status']);
+
+        header('Location: /alunos');
+        exit;
+    }
 
     public function delete($id)
     {

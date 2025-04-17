@@ -10,6 +10,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="POST" action="/alunos/store" class="needs-validation" novalidate id="formAluno">
+        <input type="hidden" name="id" id="id">
         <div class="modal-body">
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-sm-6">
@@ -25,7 +26,7 @@
                         <span class="input-group-text" id="documentHelp">
                             <i class="fa-solid fa-id-card"></i>
                         </span>
-                        <input type="text" class="form-control" name="document" id="document" minlength="14" maxlength="14" onchange="onCpfKeyUp(this); aplicarMascaraCPF(this)" onkeyup="onCpfKeyUp(this); aplicarMascaraCPF(this)" placeholder="Documento" aria-label="Documento" aria-describedby="documentHelp" required>
+                        <input type="text" class="form-control" name="document" id="document" minlength="14" maxlength="14" onchange="onCpfKeyUp(this); maskCpf(this)" onkeyup="onCpfKeyUp(this); maskCpf(this)" placeholder="Documento" aria-label="Documento" aria-describedby="documentHelp" required>
                     </div>
                 </div>
             </div>
