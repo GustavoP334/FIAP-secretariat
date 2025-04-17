@@ -1,11 +1,28 @@
 ## Sobre
-Projeto desenvolvido com PHP, tem como criar u.
+Projeto desenvolvido em **PHP** com funcionalidades para administração de **alunos** e **turmas**.
 
-## ⚙️Funcionalidades
-- *Administrar Alunos*
-- *Administrar Turmas*
+---
 
-## 🔧Instalação
+## ✨ Funcionalidades
+
+- 👨‍🎓 Gerenciamento de Alunos  
+- 🏫 Gerenciamento de Turmas  
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### Backend
+- PHP (versão 7.4)
+
+### Frontend
+- [Bootstrap](https://getbootstrap.com/) – Framework CSS para design responsivo e componentes visuais prontos
+- [DataTables](https://datatables.net/) – Exibição dinâmica e interativa de tabelas
+- [Selectize.js](https://selectize.github.io/selectize.js/) – Inputs de seleção com busca e múltiplas opções
+
+---
+
+## ⚙️ Instalação
 
 #### 1. Baixar as dependências do projeto
 ```bash
@@ -20,4 +37,9 @@ Projeto desenvolvido com PHP, tem como criar u.
 #### 5. Inicializar o projeto
 ```bash
   php -S 0.0.0.0:8000 router.php
+```
+
+#### 6. Acessar o projeto
+```bash
+  http://localhost:8000/inicio
 ```
