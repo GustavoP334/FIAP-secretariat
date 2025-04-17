@@ -61,7 +61,8 @@ class Router
         }
     
         http_response_code(404);
-        echo "Página não encontrada";
+        require __DIR__ . '/../Views/errors/404.php';
+        exit;
     }
     
 }
