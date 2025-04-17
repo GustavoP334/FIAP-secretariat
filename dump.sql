@@ -30,11 +30,10 @@ CREATE TABLE `registrations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_registration_student`
-    FOREIGN KEY (`student_id`) REFERENCES `students`(`id`)
-    ON DELETE CASCADE,
-  CONSTRAINT `fk_registration_class`
-    FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`)
-    ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `fk_registration_student` (`student_id`),
+  KEY `fk_registration_class` (`class_id`),
+  CONSTRAINT `fk_registration_class` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`),
+  CONSTRAINT `fk_registration_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
+  UNIQUE KEY unique_enrollment (student_id, class_id)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

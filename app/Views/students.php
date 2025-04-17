@@ -137,7 +137,7 @@
                                 <i class="fa-solid fa-pen"></i>
                             </button>
                             
-                            <button type="submit" class="btn btn-danger" data-bs-id="<?= $value['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeletar">
+                            <button type="button" class="btn btn-danger" data-bs-id="<?= $value['id'] ?>" data-bs-toggle="modal" data-bs-target="#modalDeletar">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>

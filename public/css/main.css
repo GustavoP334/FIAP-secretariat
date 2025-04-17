@@ -42,6 +42,10 @@ td,tr {
     max-width: 2rem;
 }
 
+table.dataTable th, table.dataTable td {
+    text-align: center !important;
+}
+
 span.input-group-text{
     background-color: #ed145b;
 }

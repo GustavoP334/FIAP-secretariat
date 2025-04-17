@@ -8,6 +8,20 @@ class StudentsModel extends Model
 {
     protected $tableName = 'students';
 
+    public function getAllList(): array
+    {
+        $query = "SELECT id, name, document FROM {$this->tableName}";
+    
+        $query .= " ORDER BY name ASC";
+        
+        $stmt = $this->db->prepare($query);
+    
+        $stmt->execute();
+        return [
+            "data" => $stmt->fetchAll(PDO::FETCH_ASSOC)
+        ];
+    }   
+
     public function getAll(string $search, int $page = 1, int $perPage = 10): array
     {
         $offset = ($page - 1) * $perPage;

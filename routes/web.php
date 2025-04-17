@@ -8,7 +8,6 @@ use App\Controllers\StudentsController;
 /** @var \App\Core\Router $router */
 
 $router->get('/inicio', [HomeController::class, 'index']);
-$router->get('/matriculas', [RegistrationController::class, 'index']);
 
 $router->get('/alunos', [StudentsController::class, 'index']);
 $router->post('/alunos/store', [StudentsController::class, 'store']);
@@ -19,3 +18,7 @@ $router->get('/turmas', [ClassesController::class, 'index']);
 $router->post('/turmas/store', [ClassesController::class, 'store']);
 $router->put('/turmas/store', [ClassesController::class, 'put']);
 $router->delete('/turmas/{id}', [ClassesController::class, 'delete']);
+
+$router->get('/matriculas', [RegistrationController::class, 'index']);
+$router->post('/matriculas/store', [RegistrationController::class, 'store']);
+$router->delete('/matriculas/{id}/{student}', [RegistrationController::class, 'delete']);

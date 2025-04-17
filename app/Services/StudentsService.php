@@ -20,6 +20,13 @@ class StudentsService
         
         return $dados;
     }
+    
+    public function getAllList()
+    {
+        $dados = $this->studentsModel->getAllList();
+        
+        return $dados;
+    }
 
     public function store($data)
     {
