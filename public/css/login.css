@@ -1,0 +1,54 @@
+body {
+    background: linear-gradient(135deg, #1e1e2f, #2d2d44, #512e4d) !important;
+    background-size: cover !important;
+    height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+.card-login {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: #fff;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+
+.btn-login {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border: none;
+    font-weight: bold;
+    color: #fff;
+}
+
+.btn-login:hover {
+    background: linear-gradient(to right, #2575fc, #6a11cb);
+}
+
+.forgot-password {
+    color: #ed145b;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.avatar-icon {
+    font-size: 3rem;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}

@@ -2,10 +2,15 @@
 
 use App\Controllers\ClassesController;
 use App\Controllers\HomeController;
+use App\Controllers\LoginController;
 use App\Controllers\RegistrationController;
 use App\Controllers\StudentsController;
 
 /** @var \App\Core\Router $router */
+
+$router->get('/login', [LoginController::class, 'index']);
+$router->post('/logout', [LoginController::class, 'logout']);
+$router->post('/login', [LoginController::class, 'login']);
 
 $router->get('/inicio', [HomeController::class, 'index']);
 

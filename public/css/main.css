@@ -3,7 +3,16 @@ html, body {
 }
 
 body {
-    background-color: #c8d0d8;
+    background: linear-gradient(135deg, #1e1e2f, #2d2d44, #512e4d) !important;
+    background-size: cover !important;
+    height: 100vh !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.btn-primary {
+    background-color: #1c31a5;
+    border-color: #182a8f;
 }
 
 #navbarNav a {

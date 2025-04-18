@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Enums\MessageTypes;
 use App\Models\StudentsModel;
 
-class StudentsService
+class StudentsService extends Service
 {
     protected StudentsModel $studentsModel;
 
@@ -132,10 +132,5 @@ class StudentsService
         }
     
         return false;
-    }
-
-    private function encryptPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
     }
 }
