@@ -43,3 +43,19 @@ Projeto desenvolvido em **PHP** com funcionalidades para administração de **al
 ```bash
   http://localhost:8000/inicio
 ```
+
+---
+
+## 👤 Acesso ao Sistema
+Para acessar o sistema, utilize o seguinte usuário padrão:
+
+🔐 Login: 
+```bash
+  admin@admin.com  
+```
+🔑 Senha: 
+```bash
+  Senha@Admin12
+```
+
+⚠️ Esses dados estarão cadastrados no banco por padrão após importar o dump.sql.
